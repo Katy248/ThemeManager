@@ -12,7 +12,7 @@ public class LocalRepositoryManager
     public static readonly LocalRepositoriesLock DefaultRepositoriesLock = new();
     public LocalRepositoryManager()
     {
-        
+
     }
 
     public void AddRepository(string remoteUrl)
@@ -61,7 +61,7 @@ public class LocalRepositoryManager
         }
         localRepository.Themes = themes;
 
-        return localRepository; 
+        return localRepository;
     }
 
     public IEnumerable<Repository> GetLocalRepositories()
@@ -79,7 +79,7 @@ public class LocalRepositoryManager
     }
     private void UpdateLocalRepositoriesLock(LocalRepositoriesLock localRepositoriesLock)
     {
-        EnsureLockFileExists() ;
+        EnsureLockFileExists();
 
         var configText = JsonConvert.SerializeObject(localRepositoriesLock);
 

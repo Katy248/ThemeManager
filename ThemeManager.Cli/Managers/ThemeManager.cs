@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.PowerShell.Commands;
+﻿using System.Management.Automation;
 using ThemeManager.Cli.FileSystem;
 
 namespace ThemeManager.Cli.Managers;

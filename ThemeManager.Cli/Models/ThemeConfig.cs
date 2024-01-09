@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace ThemeManager.Cli.Models;
+﻿namespace ThemeManager.Cli.Models;
 
 public class ThemeConfig
 {

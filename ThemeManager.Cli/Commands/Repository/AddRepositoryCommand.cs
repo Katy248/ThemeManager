@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.CommandLine;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.CommandLine;
 using ThemeManager.Cli.Managers;
 
 namespace ThemeManager.Cli.Commands.Repository;
@@ -19,8 +14,8 @@ public class AddRepositoryCommand : CliCommand
     }
     public override Command GetCommand()
     {
-        var repositoryOption = new Option<Uri>("--uri", "Link to remote repository.");
-        var nameOption = new Option<string?>("--name", "Name of new repository.");
+        var repositoryOption = new Option<Uri>("--uri", "Link to remote repository");
+        var nameOption = new Option<string?>("--name", "Name of new repository");
         repositoryOption.AddAlias("-u");
         nameOption.AddAlias("-n");
         var command = new Command("add", "Add new repository to search theme from.")
@@ -31,8 +26,7 @@ public class AddRepositoryCommand : CliCommand
 
         command.SetHandler((uri, name) => _configManager.AddRepository(uri.ToString(), name), repositoryOption, nameOption);
 
-
         return command;
     }
-    
+
 }

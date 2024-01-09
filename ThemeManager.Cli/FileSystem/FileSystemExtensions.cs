@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ThemeManager.Cli.FileSystem;
+﻿namespace ThemeManager.Cli.FileSystem;
 public static class FileSystemExtensions
 {
     public static DirectoryInfo CopyTo(this DirectoryInfo directory, string path)

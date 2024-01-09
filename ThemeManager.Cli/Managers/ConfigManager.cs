@@ -47,7 +47,7 @@ public class ConfigManager
 
         return config;
     }
-    
+
     private void SaveConfig(ApplicationConfiguration config)
     {
         var configText = JsonConvert.SerializeObject(config);

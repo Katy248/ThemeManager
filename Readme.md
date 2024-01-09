@@ -13,7 +13,7 @@ thm repository add -u "https://some-repo.git"
 Add theme from repository
 
 ```sh
-thm theme add -n "ThemeName"
+thm theme add -n "ThemeName" [-u]
 ```
 
 Set new theme
@@ -28,5 +28,5 @@ All application themes will be in `~/.themes/current/[application-name]` folder.
 
 ## TODO
 
-- Specify from which repo `add`/`set` theme
-- Add copy and reload options for application themes
+- [ ] Specify from which repo `add`/`set` theme
+- [ ] Add `config reload` command

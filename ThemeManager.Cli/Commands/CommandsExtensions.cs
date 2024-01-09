@@ -16,8 +16,6 @@ public static class CommandsExtensions
         .AddTransient<CreateConfigurationCommand>()
         .AddTransient<ReloadConfigurationCommand>()
         .AddTransient<ITopLevelCliCommand, ThemeCommand>()
-        .AddTransient<AddThemeCommand>()
         .AddTransient<SetThemeCommand>()
-        .AddTransient<RemoveThemeCommand>()
         ;
 }

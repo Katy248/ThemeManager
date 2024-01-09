@@ -4,9 +4,9 @@ using ThemeManager.Cli.Managers;
 namespace ThemeManager.Cli.Commands.Repository;
 public class ListRepositoryCommand : CliCommand
 {
-    private readonly RepositoryManager _manager;
+    private readonly LocalRepositoryManager _manager;
 
-    public ListRepositoryCommand(RepositoryManager manager)
+    public ListRepositoryCommand(LocalRepositoryManager manager)
     {
         _manager = manager;
     }
@@ -14,9 +14,9 @@ public class ListRepositoryCommand : CliCommand
     {
         var command = new Command("list", "Write list of local repositories.");
 
-        command.SetHandler(async () =>
+        command.SetHandler(() =>
         {
-            foreach (var repo in _manager.GetRepositories())
+            foreach (var repo in _manager.GetLocalRepositories())
             {
                 Console.WriteLine($"{repo.RemoteUrl}");
 

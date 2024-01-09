@@ -31,7 +31,7 @@ public class AddThemeCommand : CliCommand
             repositoryOption
         };
 
-        command.SetHandler(async (name, repo) => _themeManager.AddTheme(name), nameOption, repositoryOption);
+        //command.SetHandler(async (name, repo) => _themeManager.AddTheme(name), nameOption, repositoryOption);
 
         return command;
     }

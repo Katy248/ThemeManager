@@ -9,9 +9,9 @@ using ThemeManager.Cli.Managers;
 namespace ThemeManager.Cli.Commands.Repository;
 public class RemoveRepositoryCommand : CliCommand
 {
-    private readonly RepositoryManager _manager;
+    private readonly LocalRepositoryManager _manager;
 
-    public RemoveRepositoryCommand(RepositoryManager manager)
+    public RemoveRepositoryCommand(LocalRepositoryManager manager)
     {
         _manager = manager;
     }
@@ -26,7 +26,7 @@ public class RemoveRepositoryCommand : CliCommand
         command.AddAlias("rm");
 
 
-        command.SetHandler(async (uri) => _manager.RemoveRepository(uri.ToString()), repositoryOption);
+        command.SetHandler((uri) => _manager.RemoveRepository(uri.ToString()), repositoryOption);
 
         return command;
     }

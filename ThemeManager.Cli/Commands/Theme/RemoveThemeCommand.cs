@@ -24,7 +24,7 @@ public class RemoveThemeCommand : CliCommand
         };
         command.AddAlias("rm");
 
-        command.SetHandler(async (name) => _themeManager.RemoveTheme(name), nameOption);
+        //command.SetHandler(async (name) => _themeManager.RemoveTheme(name), nameOption);
 
         return command;
     }

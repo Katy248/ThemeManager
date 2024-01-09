@@ -89,7 +89,7 @@ public class LocalRepositoryManager
     {
         if (!RepositoriesLockFile.Exists)
         {
-            RepositoriesLockFile.Create();
+            RepositoriesLockFile.Create().Close();
 
             var defaultConfigText = JsonConvert.SerializeObject(DefaultRepositoriesLock, Formatting.Indented);
 

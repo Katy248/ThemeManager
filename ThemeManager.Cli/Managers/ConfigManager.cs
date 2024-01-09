@@ -5,17 +5,23 @@ namespace ThemeManager.Cli.Managers;
 public class ConfigManager
 {
     public static readonly string ConfigFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config/ThemeManager/config.json");
-    public async Task SetCurrentTheme()
-    {
+    private readonly LocalRepositoryManager _localRepositoryManager;
 
-    }
-    public void AddRepository(string repositoryUrl)
+    public ConfigManager(LocalRepositoryManager localRepositoryManager)
     {
+        _localRepositoryManager = localRepositoryManager;
+    }
+    public void AddRepository(string repositoryUrl, string? repositoryName = null)
+    {
+        repositoryName ??= repositoryUrl;
+
+        _localRepositoryManager.AddRepository(repositoryUrl);
+
         var config = GetConfig();
 
-        if (!config.ThemeRepositories.Any(repo => repo == repositoryUrl))
+        if (!config.ThemeRepositories.Any(repo => repo.Value == repositoryUrl))
         {
-            config.ThemeRepositories.Add(repositoryUrl);
+            config.ThemeRepositories.Add(repositoryName, repositoryUrl);
             SaveConfig(config);
         }
     }

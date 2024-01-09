@@ -38,7 +38,7 @@ public class RepositoryManager
 
         foreach (var url in repositoriesUrls)
         {
-            var repo = new Repository { RemoteUrl = url };
+            var repo = new Repository { RemoteUrl = url.Value };
 
             repo.Themes = Directory
                 .GetFiles(Path.Combine(RepositoriesFolder, GetLocalFolderName(repo.RemoteUrl)))

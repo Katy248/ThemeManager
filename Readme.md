@@ -7,13 +7,7 @@ Cli tool for managing your themes dotfiles.
 Add repository
 
 ```sh
-thm repository add -u "https://some-repo.git"
-```
-
-Add theme from repository
-
-```sh
-thm theme add -n "ThemeName" [-u]
+thm repository add -u "https://some-repo.git" -n "repository-name"
 ```
 
 Set new theme
@@ -30,3 +24,4 @@ All application themes will be in `~/.themes/current/[application-name]` folder.
 
 - [ ] Specify from which repo `add`/`set` theme
 - [ ] Add `config reload` command
+- [ ] Add application theme `CopyOptions` implementation

@@ -10,12 +10,9 @@ public static class ManagersExtensions
 {
     public static IServiceCollection AddManagers(this IServiceCollection services) =>
         services
-        .AddSingleton<RepositoryManager>()
         .AddSingleton<ConfigManager>()
         .AddSingleton<ThemeManager>()
         .AddSingleton<ApplicationsManager>()
-        .AddSingleton<LocalThemeManager>()
-        .AddSingleton<DownloadThemeManager>()
         .AddSingleton<LocalRepositoryManager>()
         ;
 }

@@ -15,13 +15,11 @@ public class ThemeManager
     public static readonly DirectoryInfo CurrentThemeDirectory = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".themes/current"));
     public static readonly string ThemesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".themes");
 
-    private readonly DownloadThemeManager _downloadThemeManager;
     private readonly LocalRepositoryManager _localRepositoryManager;
     private readonly ConfigManager _configManager;
 
-    public ThemeManager(DownloadThemeManager downloadThemeManager, LocalRepositoryManager localRepositoryManager, ConfigManager configManager)
+    public ThemeManager(LocalRepositoryManager localRepositoryManager, ConfigManager configManager)
     {
-        _downloadThemeManager = downloadThemeManager;
         _localRepositoryManager = localRepositoryManager;
         _configManager = configManager;
     }

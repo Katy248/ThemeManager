@@ -54,7 +54,6 @@ public class ConfigManager
         if (!File.Exists(ConfigFilePath))
         {
             var config = JsonConvert.SerializeObject(new ApplicationConfiguration());
-            Console.WriteLine("Hell");
             Directory.CreateDirectory(Directory.GetParent(ConfigFilePath)?.FullName ?? "");
             File.Create(ConfigFilePath).Close();
             File.WriteAllText(ConfigFilePath, config);

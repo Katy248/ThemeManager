@@ -1,4 +1,5 @@
 ﻿using System.Management.Automation;
+using ThemeManager.Cli.FileSystem;
 using ThemeManager.Cli.Models;
 using Repository = ThemeManager.Cli.Models.Repository;
 
@@ -7,20 +8,16 @@ public class RepositoryManager
 {
     public static readonly string RepositoriesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".themes/.repositories");
     private readonly ConfigManager _configManager;
-    private readonly FileSystemManager _fileSystemManager;
 
-    public RepositoryManager(ConfigManager configManager, FileSystemManager fileSystemManager)
+    public RepositoryManager(ConfigManager configManager)
     {
         _configManager = configManager;
-        _fileSystemManager = fileSystemManager;
     }
     public async Task AddRepository(string remoteUrl)
     {
         _configManager.AddRepository(remoteUrl);
-        var newFolderName = Path.GetFullPath(Path.Combine(RepositoriesFolder, GetLocalFolderName(remoteUrl)));
-        _fileSystemManager.EnsureDelete(newFolderName);
-
-        Directory.CreateDirectory(newFolderName);
+        var newFolderName = new DirectoryInfo(Path.GetFullPath(Path.Combine(RepositoriesFolder, GetLocalFolderName(remoteUrl))))
+            .EnsureEmpty();
         
         using var powerShell = PowerShell.Create();
         powerShell.AddScript($"git clone {remoteUrl} {newFolderName}");
@@ -28,8 +25,8 @@ public class RepositoryManager
     }
     public void RemoveRepository(string remoteUrl)
     {
-        var folderName = Path.GetFullPath(Path.Combine(RepositoriesFolder, GetLocalFolderName(remoteUrl)));
-        _fileSystemManager.EnsureDelete(folderName);
+        var repositoryDirectory = new DirectoryInfo(Path.GetFullPath(Path.Combine(RepositoriesFolder, GetLocalFolderName(remoteUrl))));
+        repositoryDirectory.EnsureDeleted();
 
         _configManager.RemoveRepository(remoteUrl);
     }

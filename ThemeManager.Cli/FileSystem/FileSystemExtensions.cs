@@ -54,6 +54,10 @@ public static class FileSystemExtensions
 
         directory.Delete(false);
     }
+    public static FileInfo Child(this DirectoryInfo directory, string childName)
+    {
+        return new FileInfo(Path.Combine(directory.FullName, childName));
+    }
     /// <summary>
     /// Not my method!!!
     /// </summary>

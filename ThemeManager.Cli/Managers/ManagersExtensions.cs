@@ -12,10 +12,10 @@ public static class ManagersExtensions
         services
         .AddSingleton<RepositoryManager>()
         .AddSingleton<ConfigManager>()
-        .AddSingleton<FileSystemManager>()
         .AddSingleton<ThemeManager>()
         .AddSingleton<ApplicationsManager>()
         .AddSingleton<LocalThemeManager>()
         .AddSingleton<DownloadThemeManager>()
+        .AddSingleton<LocalRepositoryManager>()
         ;
 }

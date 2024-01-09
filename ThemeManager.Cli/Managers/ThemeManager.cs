@@ -12,24 +12,21 @@ public class ThemeManager
     public static readonly DirectoryInfo CurrentThemeDirectory = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".themes/current"));
     public static readonly string ThemesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".themes");
 
-    private readonly LocalThemeManager _localThemeManager;
     private readonly DownloadThemeManager _downloadThemeManager;
+    private readonly LocalRepositoryManager _localRepositoryManager;
 
-    public ThemeManager(LocalThemeManager localThemeManager, DownloadThemeManager downloadThemeManager)
+    public ThemeManager(DownloadThemeManager downloadThemeManager, LocalRepositoryManager localRepositoryManager)
     {
-        _localThemeManager = localThemeManager;
         _downloadThemeManager = downloadThemeManager;
+        _localRepositoryManager = localRepositoryManager;
     }
-    public void AddTheme(string name)
+    public void SetTheme(string name, string? repository = null)
     {
-        var theme = _localThemeManager.GetThemeConfig(name);
-
-        _downloadThemeManager.DownloadTheme(theme);
-    }
-
-    public void SetTheme(string name)
-    {
-        var themes = _downloadThemeManager.GetDownloadedThemes();
+        if (!string.IsNullOrWhiteSpace(repository))
+        {
+            var repo = 
+        }
+        var themes = _localRepositoryManager.GetLocalRepositories();
 
         if (!themes.Contains(name))
             return;
@@ -40,9 +37,4 @@ public class ThemeManager
 
         themeDirectory.CopyTo(CurrentThemeDirectory.FullName);
     }
-    public void RemoveTheme(string name)
-    {
-        _downloadThemeManager.DeleteTheme(name);
-    }
-    
 }

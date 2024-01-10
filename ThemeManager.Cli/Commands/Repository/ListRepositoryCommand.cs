@@ -22,7 +22,12 @@ public class ListRepositoryCommand : CliCommand
 
                 foreach (var theme in repo.Themes)
                 {
-                    Console.WriteLine($"\t{theme.Name}");
+                    Console.WriteLine($"\t- {theme.Name}");
+
+                    foreach (var appTheme in theme.ApplicationThemes)
+                    {
+                        Console.WriteLine($"\t\t- {appTheme.Application}");
+                    }
                 }
             }
         });

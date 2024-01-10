@@ -7,6 +7,11 @@ public class CreateConfigurationCommand : CliCommand
     {
         var command = new Command("create", "Creates configuration file if it isn't exists.");
 
+        command.SetHandler(() =>
+        {
+            // TODO: implement command
+        });
+
         return command;
     }
 }

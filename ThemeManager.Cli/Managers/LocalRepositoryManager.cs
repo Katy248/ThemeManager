@@ -10,10 +10,6 @@ public class LocalRepositoryManager
     public static readonly string RepositoriesDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".themes/.repositories");
     public static readonly FileInfo RepositoriesLockFile = new(Path.Combine(RepositoriesDirectoryPath, "repositories.lock.json"));
     public static readonly LocalRepositoriesLock DefaultRepositoriesLock = new();
-    public LocalRepositoryManager()
-    {
-
-    }
 
     public void AddRepository(string remoteUrl)
     {
@@ -24,13 +20,15 @@ public class LocalRepositoryManager
         powerShell.AddScript($"git clone {remoteUrl} {temporaryDirectory.FullName}");
         powerShell.Invoke();
 
-        var remoteConfigFile = temporaryDirectory.Child("config.json");
-        var remoteConfig = JsonConvert.DeserializeObject<RemoteRepositoryConfig>(File.ReadAllText(remoteConfigFile.FullName)) ?? new();
+        var remoteConfig = RemoteRepositoryConfig.FromFile(temporaryDirectory.Child("config.json"));
 
-        var localConfig = GetLocalRepositoriesLock();
+        if (remoteConfig == RemoteRepositoryConfig.Default)
+            return; // TODO: Add special message
 
-        localConfig.Repositories = localConfig.Repositories.Append(ToLocalRepository(remoteUrl.ToString(), remoteConfig));
-        UpdateLocalRepositoriesLock(localConfig);
+        var repositoriesLock = GetLocalRepositoriesLock();
+        repositoriesLock.Repositories = repositoriesLock.Repositories.Where(r => r.RemoteUrl != remoteUrl);
+        repositoriesLock.Repositories = repositoriesLock.Repositories.Append(ToLocalRepository(remoteUrl.ToString(), remoteConfig));
+        UpdateLocalRepositoriesLock(repositoriesLock);
     }
     public void RemoveRepository(string remoteUrl)
     {

@@ -12,8 +12,10 @@ public class RemoveRepositoryCommand : CliCommand
     }
     public override Command GetCommand()
     {
-        var repositoryOption = new Option<Uri>("--uri", "Link to remote repository.");
-        repositoryOption.AddAlias("-u");
+        var repositoryOption = new Option<Uri>(["--url", "-u"], "Link to remote repository.")
+        {
+            IsRequired = true,
+        };
         var command = new Command("remove", "Remove local files of remote repository.")
         {
             repositoryOption

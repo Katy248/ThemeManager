@@ -4,7 +4,7 @@ using ThemeManager.Cli.Models.Configuration;
 namespace ThemeManager.Cli.Managers;
 public class ConfigManager
 {
-    public static readonly string ConfigFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config/ThemeManager/config.json");
+    public static readonly FileInfo ConfigFile = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config/ThemeManager/config.json"));
     private readonly LocalRepositoryManager _localRepositoryManager;
 
     public ConfigManager(LocalRepositoryManager localRepositoryManager)
@@ -38,12 +38,22 @@ public class ConfigManager
     {
         return GetConfig();
     }
+    public void EnsureConfigurationFileExists()
+    {
+        if (!ConfigFile.Exists)
+        {
+            var config = JsonConvert.SerializeObject(new ApplicationConfiguration());
+            Directory.CreateDirectory(Directory.GetParent(ConfigFile.FullName)?.FullName ?? "");
+            ConfigFile.Create().Close();
+            File.WriteAllText(ConfigFile.FullName, config);
+        }
+    }
 
     private ApplicationConfiguration GetConfig()
     {
         EnsureConfigurationFileExists();
 
-        var config = JsonConvert.DeserializeObject<ApplicationConfiguration>(File.ReadAllText(ConfigFilePath));
+        var config = ApplicationConfiguration.FromFile(ConfigFile);
 
         return config;
     }
@@ -52,17 +62,7 @@ public class ConfigManager
     {
         var configText = JsonConvert.SerializeObject(config);
 
-        File.WriteAllText(ConfigFilePath, configText);
+        File.WriteAllText(ConfigFile.FullName, configText);
     }
 
-    private void EnsureConfigurationFileExists()
-    {
-        if (!File.Exists(ConfigFilePath))
-        {
-            var config = JsonConvert.SerializeObject(new ApplicationConfiguration());
-            Directory.CreateDirectory(Directory.GetParent(ConfigFilePath)?.FullName ?? "");
-            File.Create(ConfigFilePath).Close();
-            File.WriteAllText(ConfigFilePath, config);
-        }
-    }
 }

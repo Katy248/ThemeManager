@@ -4,19 +4,18 @@ using ThemeManager.Cli.FileSystem;
 namespace ThemeManager.Cli.Models.Configuration;
 public sealed class ApplicationConfiguration
 {
-    private readonly FileInfo _fileInfo;
+    private FileInfo _fileInfo;
 
-    private ApplicationConfiguration(FileInfo fileInfo) 
-    {
-        _fileInfo = fileInfo;
-        fileInfo.EnsureCreated();
-    }
+    public ApplicationConfiguration() {}
     public string? CurrentTheme { get; set; }
     public Dictionary<string, string> ThemeRepositories { get; set; } = new();
     public IEnumerable<string> CustomThemes { get; set; } = Enumerable.Empty<string>();
 
     public void Save()
     {
+        if (_fileInfo is null)
+            return;
+
         _fileInfo.EnsureCreated();
 
         var configText = JsonConvert.SerializeObject(this);
@@ -26,9 +25,12 @@ public sealed class ApplicationConfiguration
 
     public static ApplicationConfiguration FromFile(FileInfo fileInfo)
     {
-        return JsonConvert
+        var config = JsonConvert
             .DeserializeObject<ApplicationConfiguration>(
                 File.ReadAllText(fileInfo.FullName))!;
+        config._fileInfo = fileInfo;
+
+        return config;
     }
 
 }

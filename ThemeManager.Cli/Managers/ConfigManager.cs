@@ -37,7 +37,7 @@ public class ConfigManager
 
     public void SetTheme(string themeName, string? repository) 
     {
-        _themeManager.SetTheme(themeName, repository);
+        _themeManager.SetTheme(themeName, _config.ThemeRepositories, repository);
 
         _config.CurrentTheme = $"{themeName}{(string.IsNullOrWhiteSpace(repository) ? $"@{repository}" : string.Empty)}";
     }
@@ -55,7 +55,7 @@ public class ConfigManager
 
         if (theme is not null)
         {
-            _themeManager.SetTheme(theme, themeRepository);
+            _themeManager.SetTheme(theme, _config.ThemeRepositories, themeRepository);
         }
     }
 

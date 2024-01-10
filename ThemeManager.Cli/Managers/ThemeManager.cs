@@ -8,21 +8,18 @@ public class ThemeManager
     public static readonly string ThemesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".themes");
 
     private readonly LocalRepositoryManager _localRepositoryManager;
-    private readonly ConfigManager _configManager;
 
-    public ThemeManager(LocalRepositoryManager localRepositoryManager, ConfigManager configManager)
+
+    public ThemeManager(LocalRepositoryManager localRepositoryManager)
     {
         _localRepositoryManager = localRepositoryManager;
-        _configManager = configManager;
     }
-    public void SetTheme(string name, string? repository = null)
+    public void SetTheme(string name, Dictionary<string, string> repositories, string? repository = null)
     {
         var repositoriesToSearch = _localRepositoryManager.GetLocalRepositories();
         if (!string.IsNullOrWhiteSpace(repository))
         {
-            var repositoryUrl = _configManager
-                .GetApplicationConfiguration()
-                .ThemeRepositories
+            var repositoryUrl = repositories
                 .FirstOrDefault(r => r.Key == repository && r.Value == repository)
                 .Value;
 

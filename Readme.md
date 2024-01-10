@@ -22,6 +22,6 @@ All application themes will be in `~/.themes/current/[application-name]` folder.
 
 ## TODO
 
-- [ ] Specify from which repo `add`/`set` theme
-- [ ] Add `config reload` command
+- [X] Specify from which repo `add`/`set` theme
+- [X] Add `config reload` command
 - [ ] Add application theme `CopyOptions` implementation

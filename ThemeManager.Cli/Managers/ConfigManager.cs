@@ -47,7 +47,7 @@ public class ConfigManager
 
         foreach (var repository in _config.ThemeRepositories)
         {
-            _localRepositoryManager.AddRepository(repository.Key);
+            _localRepositoryManager.AddRepository(repository.Value);
         }
 
         var theme = _config.CurrentTheme?.Split("@").FirstOrDefault();

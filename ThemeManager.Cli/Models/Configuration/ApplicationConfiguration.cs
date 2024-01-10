@@ -18,7 +18,7 @@ public sealed class ApplicationConfiguration
 
         _fileInfo.EnsureCreated();
 
-        var configText = JsonConvert.SerializeObject(this);
+        var configText = JsonConvert.SerializeObject(this, Formatting.Indented);
 
         File.WriteAllText(_fileInfo.FullName, configText);
     }

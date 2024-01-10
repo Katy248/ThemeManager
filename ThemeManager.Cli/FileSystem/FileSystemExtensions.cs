@@ -15,6 +15,14 @@ public static class FileSystemExtensions
         }
         return directory;
     }
+    public static FileInfo EnsureCreated(this FileInfo file)
+    {
+        if (!file.Exists)
+        {
+            file.Create();
+        }
+        return file;
+    }
     public static DirectoryInfo EnsureEmpty(this DirectoryInfo directory)
     {
         directory.EnsureDeleted();

@@ -4,15 +4,15 @@ using ThemeManager.Cli.Managers;
 namespace ThemeManager.Cli.Commands.Repository;
 public class RemoveRepositoryCommand : CliCommand
 {
-    private readonly LocalRepositoryManager _manager;
+    private readonly ConfigManager _manager;
 
-    public RemoveRepositoryCommand(LocalRepositoryManager manager)
+    public RemoveRepositoryCommand(ConfigManager manager)
     {
         _manager = manager;
     }
     public override Command GetCommand()
     {
-        var repositoryOption = new Option<Uri>(["--url", "-u"], "Link to remote repository.")
+        var repositoryOption = new Option<string>(["--repository", "-r"], "Name or url of repository")
         {
             IsRequired = true,
         };
@@ -22,8 +22,7 @@ public class RemoveRepositoryCommand : CliCommand
         };
         command.AddAlias("rm");
 
-
-        command.SetHandler((uri) => _manager.RemoveRepository(uri.ToString()), repositoryOption);
+        command.SetHandler((repository) => _manager.RemoveRepository(repository.ToString()), repositoryOption);
 
         return command;
     }

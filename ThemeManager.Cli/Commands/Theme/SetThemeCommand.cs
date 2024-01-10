@@ -1,13 +1,14 @@
 ﻿using System.CommandLine;
+using ThemeManager.Cli.Managers;
 
 namespace ThemeManager.Cli.Commands.Theme;
 public class SetThemeCommand : CliCommand
 {
-    private readonly Managers.ThemeManager _themeManager;
+    private readonly ConfigManager _configManager;
 
-    public SetThemeCommand(Managers.ThemeManager themeManager)
+    public SetThemeCommand(ConfigManager configManager)
     {
-        _themeManager = themeManager;
+        _configManager = configManager;
     }
     public override Command GetCommand()
     {
@@ -24,7 +25,7 @@ public class SetThemeCommand : CliCommand
             nameOption, repositoryOption
         };
 
-        command.SetHandler(async (name, repository) => _themeManager.SetTheme(name, repository), nameOption, repositoryOption);
+        command.SetHandler((name, repository) => _configManager.SetTheme(name, repository), nameOption, repositoryOption);
 
         return command;
     }

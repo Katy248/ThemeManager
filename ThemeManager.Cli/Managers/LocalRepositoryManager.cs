@@ -62,6 +62,14 @@ public class LocalRepositoryManager
         return localRepository;
     }
 
+    public void RemoveAllRepositories()
+    {
+        var repositoriesLock = GetLocalRepositoriesLock();
+        repositoriesLock.Repositories = Enumerable.Empty<Repository>();
+
+        UpdateLocalRepositoriesLock(repositoriesLock);
+    }
+
     public IEnumerable<Repository> GetLocalRepositories()
     {
         return GetLocalRepositoriesLock().Repositories;

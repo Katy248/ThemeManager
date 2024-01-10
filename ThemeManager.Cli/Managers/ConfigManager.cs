@@ -6,10 +6,14 @@ public class ConfigManager
 {
     public static readonly FileInfo ConfigFile = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config/ThemeManager/config.json"));
     private readonly LocalRepositoryManager _localRepositoryManager;
+    private readonly ThemeManager _themeManager;
+    private readonly ApplicationConfiguration _config;
 
-    public ConfigManager(LocalRepositoryManager localRepositoryManager)
+    public ConfigManager(LocalRepositoryManager localRepositoryManager, ThemeManager themeManager)
     {
         _localRepositoryManager = localRepositoryManager;
+        _themeManager = themeManager;
+        _config = ApplicationConfiguration.FromFile(ConfigFile);
     }
     public void AddRepository(string repositoryUrl, string? repositoryName = null)
     {
@@ -17,52 +21,46 @@ public class ConfigManager
 
         _localRepositoryManager.AddRepository(repositoryUrl);
 
-        var config = GetConfig();
 
-        if (!config.ThemeRepositories.Any(repo => repo.Value == repositoryUrl))
+        if (!_config.ThemeRepositories.Any(repo => repo.Value == repositoryUrl))
         {
-            config.ThemeRepositories.Add(repositoryName, repositoryUrl);
-            SaveConfig(config);
+            _config.ThemeRepositories.Add(repositoryName, repositoryUrl);
+            _config.Save();
         }
     }
     public void RemoveRepository(string repositoryUrl)
     {
-        var config = GetConfig();
+        _config.ThemeRepositories.Remove(repositoryUrl);
 
-        config.ThemeRepositories.Remove(repositoryUrl);
+        _config.Save();
+    }
 
-        SaveConfig(config);
+    public void SetTheme(string themeName, string? repository) 
+    {
+        _themeManager.SetTheme(themeName, repository);
+
+        _config.CurrentTheme = $"{themeName}{(string.IsNullOrWhiteSpace(repository) ? $"@{repository}" : string.Empty)}";
+    }
+    public void Reload()
+    {
+        _localRepositoryManager.RemoveAllRepositories();
+
+        foreach (var repository in _config.ThemeRepositories)
+        {
+            _localRepositoryManager.AddRepository(repository.Key);
+        }
+
+        var theme = _config.CurrentTheme?.Split("@").FirstOrDefault();
+        var themeRepository = _config.CurrentTheme?.Split("@").LastOrDefault(); 
+
+        if (theme is not null)
+        {
+            _themeManager.SetTheme(theme, themeRepository);
+        }
     }
 
     public ApplicationConfiguration GetApplicationConfiguration()
     {
-        return GetConfig();
+        return _config;
     }
-    public void EnsureConfigurationFileExists()
-    {
-        if (!ConfigFile.Exists)
-        {
-            var config = JsonConvert.SerializeObject(new ApplicationConfiguration());
-            Directory.CreateDirectory(Directory.GetParent(ConfigFile.FullName)?.FullName ?? "");
-            ConfigFile.Create().Close();
-            File.WriteAllText(ConfigFile.FullName, config);
-        }
-    }
-
-    private ApplicationConfiguration GetConfig()
-    {
-        EnsureConfigurationFileExists();
-
-        var config = ApplicationConfiguration.FromFile(ConfigFile);
-
-        return config;
-    }
-
-    private void SaveConfig(ApplicationConfiguration config)
-    {
-        var configText = JsonConvert.SerializeObject(config);
-
-        File.WriteAllText(ConfigFile.FullName, configText);
-    }
-
 }

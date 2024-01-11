@@ -1,9 +1,15 @@
 ﻿using System.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ThemeManager.Cli.Commands;
 using ThemeManager.Cli.Managers;
 
 var services = new ServiceCollection()
+    .AddLogging(builder =>
+    { 
+        builder.SetMinimumLevel(LogLevel.Debug);
+        builder.AddConsole();
+    })
     .AddManagers()
     .AddCommands()
     .BuildServiceProvider();

@@ -1,4 +1,5 @@
 ﻿using System.Management.Automation;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ThemeManager.Cli.FileSystem;
 using ThemeManager.Cli.Models.Local;
@@ -10,15 +11,26 @@ public class LocalRepositoryManager
     public static readonly string RepositoriesDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".themes/.repositories");
     public static readonly FileInfo RepositoriesLockFile = new(Path.Combine(RepositoriesDirectoryPath, "repositories.lock.json"));
     public static readonly LocalRepositoriesLock DefaultRepositoriesLock = new();
+    private readonly ILogger<LocalRepositoryManager> _logger;
 
+    public LocalRepositoryManager(ILogger<LocalRepositoryManager> logger)
+    {
+        _logger = logger;
+    }
     public void AddRepository(string remoteUrl)
     {
+        _logger.LogDebug($"Start adding repository with url '{remoteUrl}'");
+
         var temporaryDirectory = new DirectoryInfo(Path.GetFullPath(Path.Combine(RepositoriesDirectoryPath, "temp")))
             .EnsureEmpty();
 
+        _logger.LogDebug($"Creates temporary folder in '{temporaryDirectory.FullName}'");
+
         using var powerShell = PowerShell.Create();
         powerShell.AddScript($"git clone {remoteUrl} {temporaryDirectory.FullName}");
+        _logger.LogDebug($"Start cloning '{remoteUrl}' to '{temporaryDirectory.FullName}'");
         powerShell.Invoke();
+        _logger.LogDebug($"End cloning");
 
         var remoteConfig = RemoteRepositoryConfig.FromFile(temporaryDirectory.Child("config.json"));
 

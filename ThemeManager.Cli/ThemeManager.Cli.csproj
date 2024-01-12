@@ -9,7 +9,7 @@
     
     <InvariantGlobalization>true</InvariantGlobalization>
     <!--App info-->
-    <ApplicationVersion>0.1.0</ApplicationVersion>
+    <ApplicationVersion>0.1.1</ApplicationVersion>
     <AssemblyName>thm</AssemblyName>
     <Description>Application manager</Description>
   </PropertyGroup>

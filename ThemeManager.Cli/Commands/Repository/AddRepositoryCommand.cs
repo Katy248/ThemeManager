@@ -15,11 +15,7 @@ public class AddRepositoryCommand : CliCommand
     }
     public override Command GetCommand()
     {
-        var repositoryOption = new Option<Uri>(aliases: ["--uri", "-u"], "Link to remote repository")
-        {
-            IsRequired = true,
-            Arity = ArgumentArity.ExactlyOne
-        };
+        var repositoryArg = new Argument<Uri>("uri", "Link to remote repository");
         var nameOption = new Option<string?>(aliases: ["--name", "-n"], description: "Name of new repository")
         {
             IsRequired = false,
@@ -27,7 +23,7 @@ public class AddRepositoryCommand : CliCommand
 
         var command = new Command("add", "Add new repository to search theme from.")
         {
-            repositoryOption,
+            repositoryArg,
             nameOption,
         };
 
@@ -38,7 +34,7 @@ public class AddRepositoryCommand : CliCommand
                 name = uri.ToString();
             }
             _configManager.AddRepository(uri.ToString(), name);
-        }, repositoryOption, nameOption);
+        }, repositoryArg, nameOption);
 
         return command;
     }

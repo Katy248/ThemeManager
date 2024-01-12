@@ -12,20 +12,17 @@ public class SetThemeCommand : CliCommand
     }
     public override Command GetCommand()
     {
-        var nameOption = new Option<string>(["--name", "-n"], "Name of theme to set.")
-        {
-            IsRequired = true,
-        };
+        var nameArg = new Argument<string>("name", "Name of theme to set");
         var repositoryOption = new Option<string?>(["--repository", "-r"], "Repository to search theme from")
         {
             IsRequired = false
         };
         var command = new Command("set", "Sets current theme to specified.")
         {
-            nameOption, repositoryOption
+            nameArg, repositoryOption
         };
 
-        command.SetHandler((name, repository) => _configManager.SetTheme(name, repository), nameOption, repositoryOption);
+        command.SetHandler((name, repository) => _configManager.SetTheme(name, repository), nameArg, repositoryOption);
 
         return command;
     }

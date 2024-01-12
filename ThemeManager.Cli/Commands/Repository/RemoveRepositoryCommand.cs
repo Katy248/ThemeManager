@@ -12,17 +12,14 @@ public class RemoveRepositoryCommand : CliCommand
     }
     public override Command GetCommand()
     {
-        var repositoryOption = new Option<string>(["--repository", "-r"], "Name or url of repository")
-        {
-            IsRequired = true,
-        };
+        var repositoryArg = new Argument<string>("repository", "Name or url of repository");
         var command = new Command("remove", "Remove local files of remote repository.")
         {
-            repositoryOption
+            repositoryArg
         };
         command.AddAlias("rm");
 
-        command.SetHandler((repository) => _manager.RemoveRepository(repository.ToString()), repositoryOption);
+        command.SetHandler((repository) => _manager.RemoveRepository(repository.ToString()), repositoryArg);
 
         return command;
     }
